@@ -1,0 +1,50 @@
+<mvc:View controllerName="project1.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+    <Page id="page" title="{i18n>title}">
+    <l:VerticalLayout id="_IDGenVerticalLayout" class="sapUiContentPadding" width="100%">
+		<Input
+			id="employeeInput"
+			
+			placeholder="Enter The Terminated Employee's Contract"
+			showSuggestion="true"
+			showValueHelp="true"
+			valueHelpRequest=".onValueHelpRequest"
+			suggestionItems="{/Employment}">
+			<suggestionItems>
+				<core:Item id="_IDGenItem" text="{userId}" />
+			</suggestionItems>
+		</Input>
+	</l:VerticalLayout>
+	<Panel id="_IDGenPanel" visible="{viewModel>/formVisible}" headerText="Employee Exit Request">
+  <VBox id="_IDGenVBox" class="sapUiSmallMargin">
+
+    <Text id="_IDGenText" text="User ID: {viewModel>/employeeData/userId}" class="items"/>
+    <Text id="_IDGenText1" text="Job Title: {viewModel>/employeeData/jobTitle}" class="items" />
+    <Text id="_IDGenText4" text="Start Date: {viewModel>/employeeData/startDate}" class="items" />
+    <Text id="_IDGenText2" text="End Date: {viewModel>/employeeData/endDate}" class="items" />
+    <Text id="_IDGenText3" text="Status: {viewModel>/employeeData/emplStatusLabel}" class="items" />
+        <Text id="_IDGenText5" text="Manager ID: {viewModel>/employeeData/managerId}" class="items" />
+
+
+    <Label id="_IDGenLabel" text="Sponsorship Transfer Option" class="Margin" />
+    <Select id="_IDGenSelect"
+      selectedKey="{viewModel>/sponsorshipOption}"
+      change=".onSponsorOptionChange">
+      <items>
+        <core:Item id="_IDGenItem1" key="transfer" text="Transfer Sponsorship" />
+        <core:Item id="_IDGenItem2" key="no_transfer" text="No Transfer" />
+      </items>
+    </Select>
+
+    <Button id="_IDGenButton1"
+      text="Send Exit Request"
+      press=".onSubmitExitRequest"
+      type="Emphasized"
+    />
+  </VBox>
+</Panel>
+    </Page>
+</mvc:View>
