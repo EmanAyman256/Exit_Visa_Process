@@ -23,7 +23,15 @@
           "annotations": [],
           "odataVersion": "4.0"
         }
-      }
+      },
+      "NotifService":
+      {
+        "uri": "/odata/v4/notif/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }      }
+      
     }
   },
   "sap.ui": {
@@ -49,7 +57,9 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-        "sap.ui.layout": {}
+        "sap.ui.layout": {},
+        "sap.ui.table": {}
+
 
       }
     },
@@ -71,6 +81,13 @@
           "operationMode": "Server",
           "autoExpandSelect": true,
           "earlyRequests": true
+        }
+      },
+      "notif": {
+        "dataSource": "NotifService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server"
         }
       }
     },

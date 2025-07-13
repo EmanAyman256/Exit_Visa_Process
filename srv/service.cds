@@ -2,6 +2,7 @@ using { ECEmploymentInformation as external } from './external/ECEmploymentInfor
 
 service ECEmployeeProfileService  {
 entity Employment as projection on external.EmpJob {
+    
    key userId,
     key seqNumber,
     key startDate,
@@ -12,9 +13,10 @@ entity Employment as projection on external.EmpJob {
     jobTitle,
     virtual emplStatusLabel: String
 
+};
 }
+service NotifService {
+  action sendExitRequest(employeeId: String, reason: String) returns String;
 }
-// entity EmploymentStatus as projection on external.EmpEmploymentStatus {
-//   key externalCode as code,
-//       label
-// }
+
+
