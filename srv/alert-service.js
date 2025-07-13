@@ -17,7 +17,6 @@ module.exports = async function sendExitRequestNotification({ employeeId, name }
       auth: { username: "sb-62c44389-e515-4e7b-9ed5-9f36ce083f50!b444440|ans-xsuaa!b673", password: "dc86cf44-328e-468a-91ba-9906b63ca110$dq4AZUa9yYAxDUTq1_1xsK7-J2_th-I-O5K-YWh_1TE=" }
     });
     const accessToken = tokenResponse.data.access_token;
-
     // Prepare event payload
     const eventPayload = {
       eventType: 'ExitRequestNotification',
