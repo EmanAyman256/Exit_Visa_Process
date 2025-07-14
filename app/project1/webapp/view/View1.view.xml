@@ -1,61 +1,152 @@
-<mvc:View xmlns:cards="sap.f.cards" controllerName="project1.controller.View1"
+<mvc:View
+    xmlns:cards="sap.f.cards"
+    controllerName="project1.controller.View1"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-     xmlns:m="sap.m"
-	xmlns:l="sap.ui.layout"
-      xmlns:table="sap.ui.table"
-
-	xmlns:core="sap.ui.core">
-    <Page id="page" title="{i18n>title}">
-    <l:VerticalLayout id="_IDGenVerticalLayout" class="sapUiContentPadding" width="100%">
-		<Input
-			id="employeeInput"
-			placeholder="Enter The Terminated Employee's Contract"
-			showSuggestion="true"
-			showValueHelp="true"
-			valueHelpRequest=".onValueHelpRequest"
-			suggestionItems="{/Employment}">
-			<suggestionItems>
-				<core:Item id="_IDGenItem" text="{userId}" />
-			</suggestionItems>
-		</Input>
-	</l:VerticalLayout>
-	<Panel id="_IDGenPanel" visible="{viewModel>/formVisible}" headerText="Employee Exit Request" >
-  <m:Button
-  id="_IDGenButton1"
-  text="Send Exit Request"
-  press=".onSendExitRequest"
-  type="Emphasized"
-/>
-<m:Table id="exitInfoTable" inset="false">
-  <m:columns>
-    <m:Column id="_IDGenColumn1"><m:Text id="_IDGenText" text="User ID" /></m:Column>
-    <m:Column id="_IDGenColumn2"><m:Text id="_IDGenText1" text="Job Title" /></m:Column>
-    <m:Column id="_IDGenColumn3"><m:Text id="_IDGenText2" text="Termination Date" /></m:Column>
-    <m:Column id="_IDGenColumn4"><m:Text id="_IDGenText3" text="Status" /></m:Column>
-    <m:Column id="_IDGenColumn5"><m:Text id="_IDGenText4" text="Manager ID" /></m:Column>
-    <m:Column id="_IDGenColumn6"><m:Text id="_IDGenText10" text="Visa Number" /></m:Column>
-    <m:Column id="_IDGenColumn7"><m:Text id="_IDGenText11" text="Issue Date" /></m:Column>
-    <m:Column id="_IDGenColumn8"><m:Text id="_IDGenText12" text="Expiry Date" /></m:Column>
-    <m:Column id="_IDGenColumn9"><m:Text id="_IDGenText13" text="Passport Number" /></m:Column>
-  </m:columns>
-  <m:items>
-    <m:ColumnListItem id="_IDGenColumnListItem">
-      <m:cells>
-        <m:Text id="_IDGenText5" text="{viewModel>/employeeData/userId}" />
-        <m:Text id="_IDGenText6" text="{viewModel>/employeeData/jobTitle}" />
-        <m:Text id="_IDGenText7" text="{viewModel>/employeeData/startDate}" />
-        <m:Text id="_IDGenText8" text="{viewModel>/employeeData/emplStatusLabel}" />
-        <m:Text id="_IDGenText9" text="{viewModel>/employeeData/managerId}" />
-        <m:Text id="_IDGenText14" text="202024642" />
-        <m:Text id="_IDGenText15" text="14-7-2019" />
-        <m:Text id="_IDGenText16" text="14-7-2025" />
-        <m:Text id="_IDGenText17" text="459345792" />
-
-      </m:cells>
-    </m:ColumnListItem>
-  </m:items>
-</m:Table>
-</Panel>
+    xmlns:m="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <l:VerticalLayout
+            id="_IDGenVerticalLayout"
+            class="sapUiContentPadding"
+            width="100%"
+        >
+            <Input
+                id="employeeInput"
+                placeholder="Enter The Terminated Employee's Contract"
+                showSuggestion="true"
+                showValueHelp="true"
+                valueHelpRequest=".onValueHelpRequest"
+                suggestionItems="{/Employment}"
+            >
+                <suggestionItems>
+                    <core:Item
+                        id="_IDGenItem"
+                        text="{userId}"
+                    />
+                </suggestionItems>
+            </Input>
+        </l:VerticalLayout>
+        <Panel
+            id="_IDGenPanel"
+            visible="{viewModel>/formVisible}"
+            headerText="Employee Exit Request"
+        >
+            <m:Button
+                id="_IDGenButton1"
+                text="Send Exit Request"
+                press=".onSendExitRequest"
+                type="Emphasized"
+            />
+            <m:Table
+                id="exitInfoTable"
+                inset="false"
+            >
+                <m:columns>
+                    <m:Column id="_IDGenColumn1">
+                        <m:Text
+                            id="_IDGenText"
+                            text="User ID"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn2">
+                        <m:Text
+                            id="_IDGenText1"
+                            text="Job Title"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn3">
+                        <m:Text
+                            id="_IDGenText2"
+                            text="Termination Date"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn4">
+                        <m:Text
+                            id="_IDGenText3"
+                            text="Status"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn5">
+                        <m:Text
+                            id="_IDGenText4"
+                            text="Manager ID"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn6">
+                        <m:Text
+                            id="_IDGenText10"
+                            text="Visa Number"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn7">
+                        <m:Text
+                            id="_IDGenText11"
+                            text="Issue Date"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn8">
+                        <m:Text
+                            id="_IDGenText12"
+                            text="Expiry Date"
+                        />
+                    </m:Column>
+                    <m:Column id="_IDGenColumn9">
+                        <m:Text
+                            id="_IDGenText13"
+                            text="Passport Number"
+                        />
+                    </m:Column>
+                </m:columns>
+                <m:items>
+                    <m:ColumnListItem id="_IDGenColumnListItem">
+                        <m:cells>
+                            <m:Text
+                                id="_IDGenText5"
+                                text="{viewModel>/employeeData/userId}"
+                            />
+                            <m:Text
+                                id="_IDGenText6"
+                                text="{viewModel>/employeeData/jobTitle}"
+                            />
+                            <m:Text
+                                id="_IDGenText7"
+                                text="{viewModel>/employeeData/startDate}"
+                            />
+                            <m:Text
+                                id="_IDGenText8"
+                                text="{viewModel>/employeeData/emplStatusLabel}"
+                            />
+                            <m:Text
+                                id="_IDGenText9"
+                                text="{viewModel>/employeeData/managerId}"
+                            />
+                            <m:Text
+                                id="_IDGenText14"
+                                text="202024642"
+                            />
+                            <m:Text
+                                id="_IDGenText15"
+                                text="14-7-2019"
+                            />
+                            <m:Text
+                                id="_IDGenText16"
+                                text="14-7-2025"
+                            />
+                            <m:Text
+                                id="_IDGenText17"
+                                text="459345792"
+                            />
+                        </m:cells>
+                    </m:ColumnListItem>
+                </m:items>
+            </m:Table>
+        </Panel>
     </Page>
 </mvc:View>
