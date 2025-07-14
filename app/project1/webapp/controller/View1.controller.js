@@ -1,15 +1,20 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-     "sap/m/MessageBox",
-     "sap/m/MessageToast",
-
-], (Controller,MessageBox,MessageToast) => {
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
+    "sap/m/Button",
+    "sap/m/Dialog",
+    "sap/m/library" // Import sap/m/library for enums
+], (Controller, MessageBox, MessageToast, Button, Dialog, mobileLibrary) => {
     "use strict";
 
+    // Access enums from mobileLibrary
+    const { ButtonType, DialogType } = mobileLibrary;
+
     return Controller.extend("project1.controller.View1", {
+        // Adding All The Initializations
         onInit() {
-
-
+            // Initialize The Model
             const viewModel = new sap.ui.model.json.JSONModel({
                 employee: "",
                 employeeData: {},
@@ -18,9 +23,11 @@ sap.ui.define([
             });
             this.getView().setModel(viewModel, "viewModel");
         },
+
+        // For The Search Help That Showed Table of Employees 
         onValueHelpRequest() {
             if (!this._oValueHelpDialog) {
-                this._oValueHelpDialog = new sap.m.Dialog({
+                this._oValueHelpDialog = new Dialog({
                     title: "Select Employee",
                     content: [
                         new sap.m.Table({
@@ -31,29 +38,21 @@ sap.ui.define([
                             columns: [
                                 new sap.m.Column({ header: new sap.m.Label({ text: "EmployeeId" }) }),
                                 new sap.m.Column({ header: new sap.m.Label({ text: "Termination Date" }) }),
-
-                                // new sap.m.Column({ header: new sap.m.Label({ text: "EndDate" }) }),
                                 new sap.m.Column({ header: new sap.m.Label({ text: "EmployeeStatus" }) }),
                                 new sap.m.Column({ header: new sap.m.Label({ text: "JobTitle" }) }),
-                                new sap.m.Column({ header: new sap.m.Label({ text: "ManagerId" }) }),
-
+                                new sap.m.Column({ header: new sap.m.Label({ text: "ManagerId" }) })
                             ],
                             items: {
                                 path: "/Employment",
-                                parameters: { $select: "userId,endDate,emplStatus,emplStatusLabel,jobTitle" },
+                                parameters: { $select: "userId,endDate,emplStatus,emplStatusLabel,jobTitle,managerId" },
                                 template: new sap.m.ColumnListItem({
                                     type: "Active",
                                     cells: [
                                         new sap.m.Text({ text: "{userId}" }),
-                                        new sap.m.Text({ text: "{startDate}" }),
-
-                                        // new sap.m.Text({ text: "{endDate}" }),
+                                        new sap.m.Text({ text: "{endDate}" }), // Corrected from startDate to endDate
                                         new sap.m.Text({ text: "{emplStatusLabel}" }),
                                         new sap.m.Text({ text: "{jobTitle}" }),
                                         new sap.m.Text({ text: "{managerId}" })
-
-
-
                                     ]
                                 }),
                                 filters: [
@@ -67,35 +66,32 @@ sap.ui.define([
                                         console.log("Filtered items received:", aItems.length);
                                         console.log("Count from server:", oContext?.__count || "N/A");
                                         if (aItems.length === 0) {
-                                            sap.m.MessageBox.warning("No terminated employees found.");
+                                            MessageBox.warning("No terminated employees found.");
                                         }
                                     }
                                 }
                             }
-
                         })
                     ],
-                    beginButton: new sap.m.Button({
+                    beginButton: new Button({
                         text: "Confirm",
                         press: (oEvent) => {
                             const oTable = this.byId("EmployeeTable");
                             const oSelectedItem = oTable.getSelectedItem();
-                            const sQuotation = oSelectedItem.getCells()[0].getText();
-                            const oContext = oSelectedItem.getBindingContext();
-                            const oSelectedData = oContext.getObject();
-                            const viewModel = this.getView().getModel("viewModel");
                             if (oSelectedItem) {
-                                // const sQuotation = oSelectedItem.getCells()[0].getText();
+                                const oContext = oSelectedItem.getBindingContext();
+                                const oSelectedData = oContext.getObject();
+                                const sQuotation = oSelectedData.userId;
+                                const viewModel = this.getView().getModel("viewModel");
                                 viewModel.setProperty("/employee", sQuotation);
                                 viewModel.setProperty("/employeeData", oSelectedData);
                                 viewModel.setProperty("/formVisible", true);
                                 this.byId("employeeInput").setValue(sQuotation);
-                                this.getView().getModel("viewModel").setProperty("/employee", sQuotation);
                                 this._oValueHelpDialog.close();
                             }
                         }
                     }),
-                    endButton: new sap.m.Button({
+                    endButton: new Button({
                         text: "Cancel",
                         press: () => {
                             this._oValueHelpDialog.close();
@@ -103,88 +99,67 @@ sap.ui.define([
                     })
                 });
 
-                var oODataModel = this.getOwnerComponent().getModel();
+                const oODataModel = this.getOwnerComponent().getModel();
                 this._oValueHelpDialog.setModel(oODataModel);
                 this.getView().addDependent(this._oValueHelpDialog);
             }
             this._oValueHelpDialog.open();
         },
-        onSubmitExitRequest: function () {
-            const data = this.getView().getModel("viewModel").getProperty("/employeeData");
-            const sponsorship = this.getView().getModel("viewModel").getProperty("/sponsorshipOption");
 
-            // You can now send this info to backend or show it
-            console.log("Exit Request Submitted for:", data.userId);
-            console.log("Sponsorship Option:", sponsorship);
-
-            sap.m.MessageToast.show("Exit request sent for " + data.userId);
-        },
-        onSendAlert: function () {
-            var oTable = this.byId("employmentTable");
-            var oSelectedItem = oTable.getSelectedItem();
-            var sUserId = oSelectedItem
-                ? oSelectedItem.getBindingContext().getProperty("userId")
-                : "unknown";
-
-            var oNotifModel = this.getView().getModel("notif");
-            if (!oNotifModel) {
-                MessageBox.error("Notification model is not initialized.");
-                return;
-            }
-
-            // Bind and invoke the sendAlert action
-            var oAction = oNotifModel.bindAction("/NotifService.sendAlert", {
-                userId: sUserId
-            });
-
-            oAction.invoke().then(
-                function () {
-                    var sMessage = oAction.getBoundContext().getObject().value || "Alert sent successfully!";
-                    MessageBox.success(sMessage);
-                    MessageToast.show("Notification triggered!");
-                },
-                function (oError) {
-                    var sError = oError.message || "Failed to invoke action.";
-                    MessageBox.error("Failed to send alert: " + sError);
-                }
-            );
-        },
+        // Send the Email ALERT NOTIF FOR THE TERMINATED EMPLOYEES' EXIT REQUEST
         onSendExitRequest() {
             const viewModel = this.getView().getModel("viewModel");
             const employeeId = viewModel.getProperty("/employee");
             const name = viewModel.getProperty("/employeeData/jobTitle") || "Unknown Employee";
-      
+
             if (!employeeId) {
-              MessageBox.error("Please select an employee.");
-              return;
+                MessageBox.error("Please select an employee.");
+                return;
             }
-      
-            const oNotifModel = this.getOwnerComponent().getModel("notif");
-            if (!oNotifModel) {
-              MessageBox.error("Notification model is not initialized.");
-              return;
+
+            if (!this.oApproveDialog) {
+                this.oApproveDialog = new Dialog({
+                    type: DialogType.Message,
+                    title: "Confirm",
+                    content: new sap.m.Text({ text: "Do you want to confirm the exit request?" }),
+                    beginButton: new Button({
+                        type: ButtonType.Emphasized,
+                        text: "Confirm",
+                        press: async () => {
+                            try {
+                               // MessageToast.show("Submit pressed!");
+                                const oNotifModel = this.getOwnerComponent().getModel("notif");
+                                if (!oNotifModel) {
+                                    MessageBox.error("Notification model is not initialized.");
+                                    return;
+                                }
+
+                                const oAction = oNotifModel.bindContext("/sendExitRequest(...)", undefined, {
+                                    $$updateGroupId: "submitGroup"
+                                });
+                                oAction.setParameter("employeeId", employeeId);
+                                oAction.setParameter("name", name);
+
+                                await oAction.invoke();
+                                const sMessage = oAction.getBoundContext().getObject()?.value || "Exit request notification sent successfully!";
+                                MessageToast.show(sMessage);
+                            } catch (oError) {
+                                MessageBox.error("Failed to send notification: " + oError.message);
+                            } finally {
+                                this.oApproveDialog.close();
+                            }
+                        }
+                    }),
+                    endButton: new Button({
+                        text: "Cancel",
+                        press: () => {
+                            this.oApproveDialog.close();
+                        }
+                    })
+                });
             }
-            
-      
-            const oAction = oNotifModel.bindContext("/sendExitRequest(...)", undefined, {
-              $$updateGroupId: "submitGroup"
-            });
-            oAction.setParameter("employeeId", employeeId);
-            oAction.setParameter("name", name);
-      
-            oAction.invoke().then(
-              () => {
-                const sMessage = oAction.getBoundContext().getObject()?.value || "Exit request notification sent successfully!";
-                MessageToast.show(sMessage);
-              },
-              (oError) => {
-                MessageBox.error("Failed to send notification: " + oError.message);
-              }
-            );
-          }
-          
 
-
-
+            this.oApproveDialog.open();
+        }
     });
 });
